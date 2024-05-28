@@ -1,0 +1,46 @@
+<div class="forms myForm" [ngClass]="formStatus">
+  <h1>Reactive Forms</h1>
+    <form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()">
+
+      <div formGroupName="personalDetails">
+        <label for="firstname">FirstName</label><br>
+        <input type="text" placeholder="enter ur firstname" formControlName="firstname"><br>
+
+        <div>
+          <small *ngIf="reactiveForm.get('personalDetails.firstname').errors?.['required']">
+            Firstname is required field.
+          </small>
+          <small *ngIf="reactiveForm.get('personalDetails.firstname').errors?.['noSpaceAllowed']">
+            Firstname cannot contain space.
+          </small>
+        </div>
+        <label for="lastname">LastName</label><br>
+        <input type="text" placeholder="enter ur firstname" formControlName="lastname"><br>
+        <label for="email">Email</label><br>
+        <input type="text" placeholder="enter ur email" formControlName="email"><br>
+        <div>
+          <span style="color: red;" 
+          *ngIf="!reactiveForm.get('personalDetails.email').valid && 
+          reactiveForm.get('personalDetails.email').touched">
+            Email is not valid</span>
+        </div>
+      </div>
+
+      <label for="gender">Gender:</label><br>
+      <input type="radio" id="male" value="male" formControlName="gender">
+      <label for="male">Male</label>
+      <input type="radio" id="female" value="female" formControlName="gender">
+      <label for="female">Female</label>
+      <input type="radio" id="others" value="others" formControlName="gender">
+      <label for="others">Others</label><br>
+
+      <div formArrayName="skills">
+        <ng-container *ngFor="let skill of reactiveForm.get('skills')['controls'];index as i">
+          <input type="text" id="skills" placeholder="add skills" formControlName="{{i}}">
+        </ng-container>
+        <button (click)="addSkills()">+Add Skills</button>
+      </div>
+
+      <input type="submit" value="Submit">
+    </form>
+</div>
